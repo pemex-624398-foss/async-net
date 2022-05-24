@@ -18,7 +18,7 @@ public static class TaskDemoV2
             () => Work.Run(new Work.Argument(DataSet.NumberDictionary, "A", cancellationTokenSource.Token)), 
             cancellationTokenSource.Token
             );
-        
+
         var task2 = Task.Run(
             () => Work.Run(new Work.Argument(DataSet.NumberDictionary, "B", cancellationTokenSource.Token)), 
             cancellationTokenSource.Token

@@ -1,12 +1,13 @@
 using System.Data;
 using AsyncApi.Core.Model;
+using CaseExtensions;
 using Dapper;
 
 namespace AsyncApi.Infrastructure.Database.Repositories;
 
-public class EmpleadoRepository : DbRepository<Empleado, int>, IEmpleadoRepository
+public class EmpleadoRepository : DbRepository<Empleado, Guid>, IEmpleadoRepository
 {
-    public EmpleadoRepository(IDbConnectionFactory connectionFactory, string connectionKey = DbConnectionConfiguration.DefaultKey) : base(connectionFactory, connectionKey)
+    public EmpleadoRepository(IDbConnectionFactory connectionFactory, string connectionKey) : base(connectionFactory, connectionKey)
     {
     }
 
@@ -14,20 +15,55 @@ public class EmpleadoRepository : DbRepository<Empleado, int>, IEmpleadoReposito
     {
     }
 
-    public override async Task InsertAsync(Empleado entity)
+    public async Task<IEnumerable<Empleado>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        using var connection = GetConnection();
+        return await connection.QueryAsync<Empleado>(
+            "select " +
+            "id_empleado as IdEmpleado, " +
+            "nombre as Nombre, " +
+            "apellido as Apellido, " +
+            "genero as Genero, " +
+            "fecha_nacimiento as FechaNacimiento, " +
+            "rfc as Rfc, " +
+            "correo as Correo, " +
+            "registro_confirmado as RegistroConfirmado " +
+            "from empleado"
+            );
+    }
+
+    public override async Task InsertAsync(Empleado entity, CancellationToken cancellationToken)
     {
         using var connection = GetConnection();
 
-        var idEmpleado = await connection.QuerySingleOrDefaultAsync<int>(
-            "insert into empleado " +
-            "(id_empleado, rfc, nombre, apellido, genero, fecha_nacimiento, correo) " +
+        await connection.ExecuteAsync(
+            "insert into public.empleado " +
+            "(id_empleado, nombre, apellido, genero, fecha_nacimiento, rfc, correo) " +
             "values " +
-            "(default, @Rfc, @Nombre, @Apellido, @Genero, @FechaNacimiento, @Correo) " +
-            "returning id_empleado",
+            "(@IdEmpleado, @Nombre, @Apellido, @Genero, @FechaNacimiento, @Rfc, @Correo)",
             entity,
             commandType: CommandType.Text
             );
+    }
+
+    public override async Task PatchAsync(Guid id, string propertyName, object value, CancellationToken cancellationToken)
+    {
+        // this-is-kebab-case (URL)
+        // thisIsCamelCase (Javascript properties and variables, C# variables)
+        // ThisIsPascalCase (C# clases and properties, MS SQL Server)
+        // this_is_snake_case (PostgreSQL, MySQL, MariaDB, etc)
+        // THIS_IS_MACRO_CASE (Java constants and enums)
+        // This-Is-Train-Case
+        var columnName = propertyName.ToSnakeCase();
         
-        entity.IdEmpleado = idEmpleado;
+        using var connection = GetConnection();
+        await connection.ExecuteAsync(
+            $"update empleado set {columnName} = @Value where id_empleado = @IdEmpleado",
+            new
+            {
+                Value = value,
+                IdEmpleado = id
+            }
+            );
     }
 }

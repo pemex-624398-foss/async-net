@@ -36,7 +36,7 @@ public static class ThreadDemo
         Thread.Sleep(Work.Timeout);
         
         // Language-Integrated Query (LINQ)
-        var runningThreadList =
+        /*var runningThreadList =
             from t in threadList.AsQueryable()
             where t.ThreadState == ThreadState.Running
             select t;
@@ -46,7 +46,7 @@ public static class ThreadDemo
             Log.WriteLine("No more threads running");
             Log.WriteLine();
             return;
-        }
+        }*/
         
         Log.WriteLine();
         Log.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");

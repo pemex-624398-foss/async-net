@@ -5,7 +5,7 @@ namespace AsyncApi.Infrastructure.Database.Repositories;
 
 public class DbRepository<TEntity, TIdentity> : IRepository<TEntity, TIdentity> where TEntity : class
 {
-    protected DbRepository(IDbConnectionFactory connectionFactory, string connectionKey = DbConnectionConfiguration.DefaultKey)
+    protected DbRepository(IDbConnectionFactory connectionFactory, string connectionKey)
     {
         ConnectionFactory = connectionFactory;
         ConnectionKey = connectionKey;
@@ -25,27 +25,27 @@ public class DbRepository<TEntity, TIdentity> : IRepository<TEntity, TIdentity> 
         ?? ConnectionFactory?.GetConnection(ConnectionKey!) 
         ?? throw new InvalidOperationException();
 
-    public virtual Task<TEntity?> GetByIdAsync(TIdentity id)
+    public virtual Task<TEntity?> GetByIdAsync(TIdentity id, CancellationToken cancellationToken)
     {
         throw new NotSupportedException();
     }
     
-    public virtual Task InsertAsync(TEntity entity) 
+    public virtual Task InsertAsync(TEntity entity, CancellationToken cancellationToken) 
     {
         throw new NotSupportedException();
     }
 
-    public virtual Task UpdateAsync(TEntity entity) 
+    public virtual Task UpdateAsync(TEntity entity, CancellationToken cancellationToken) 
     {
         throw new NotSupportedException();
     }
     
-    public virtual Task PatchAsync(string propertyName, object value) 
+    public virtual Task PatchAsync(TIdentity id, string propertyName, object value, CancellationToken cancellationToken) 
     {
         throw new NotSupportedException();
     }
 
-    public virtual Task DeleteByIdAsync(TIdentity id)
+    public virtual Task DeleteByIdAsync(TIdentity id, CancellationToken cancellationToken)
     {
         throw new NotSupportedException();
     }

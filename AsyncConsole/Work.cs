@@ -9,8 +9,8 @@ public static class Work
         string Key,
         CancellationToken? CancellationToken = default
         );
-
-    public const int Timeout = 6 * 1000;
+    
+    public const int Timeout = 3 * 1000;
 
     public static void Run(Argument argument)
     {

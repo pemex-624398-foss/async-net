@@ -15,7 +15,7 @@ public static class TaskDemoV3
         fileWriter.WriteLineAsync("WrongLine3");
         fileWriter.WriteLineAsync("WrongLine4");
         fileWriter.WriteLineAsync("WrongLine5");
-        
+
         Log.WriteLine("Work finished");
         Log.WriteLine();
     }
@@ -34,7 +34,7 @@ public static class TaskDemoV3
             fileWriter.WriteLineAsync("WrongLine3");
             fileWriter.WriteLineAsync("WrongLine4");
             fileWriter.WriteLineAsync("WrongLine5");
-        }
+        } 
 
         Log.WriteLine("Work finished");
         Log.WriteLine();

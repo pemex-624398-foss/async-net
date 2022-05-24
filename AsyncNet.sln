@@ -4,10 +4,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncConsole", "AsyncConsol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncApi", "AsyncApi\AsyncApi.csproj", "{6E788A7D-DF54-4A09-B810-A4AE4B06AFBE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{BE58DE1F-A7C3-40D7-9DB4-43CDA6B71B23}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{BE58DE1F-A7C3-40D7-9DB4-43CDA6B71B23}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		README.md = README.md
+		compose.yml = compose.yml
+		setup.sh = setup.sh
 	EndProjectSection
 EndProject
 Global
